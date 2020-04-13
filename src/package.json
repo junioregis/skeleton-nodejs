@@ -1,0 +1,40 @@
+{
+  "name": "skeleton",
+  "version": "1.0.0",
+  "description": "Skeleton",
+  "author": "Onarion <dev@domain.com>",
+  "main": "server.js",
+  "scripts": {
+    "status": "node status.js",
+    "prepare": "npm run migrate",
+    "migrate": "sequelize db:migrate",
+    "seed": "sequelize db:seed:all",
+    "dev": "npm run prepare && nodemon --inspect=0.0.0.0 server.js --color=always",
+    "prd": "npm run prepare && npm run migrate && npm run seed && node server.js"
+  },
+  "bin": {
+    "deploy": "bin/deployer.js"
+  },
+  "dependencies": {
+    "@slack/webhook": "^5.0.3",
+    "body-parser": "^1.19.0",
+    "crypto-js": "^4.0.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.1.1",
+    "express-validator": "^6.4.0",
+    "geoip-lite": "^1.4.1",
+    "moment": "^2.24.0",
+    "node-cron": "^2.0.3",
+    "nodemailer": "^6.4.6",
+    "pg": "^7.18.2",
+    "pg-hstore": "^2.3.3",
+    "selenium-webdriver": "^4.0.0-alpha.7",
+    "sequelize": "^5.21.5",
+    "sharp": "^0.25.2"
+  },
+  "devDependencies": {
+    "colors": "^1.4.0",
+    "nodemon": "2.0.2",
+    "ssh2": "^0.8.9"
+  }
+}

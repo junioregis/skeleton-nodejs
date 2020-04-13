@@ -1,0 +1,42 @@
+version: "3.7"
+
+volumes:
+  db_admin:
+
+services:
+  app:
+    restart: "no"
+    command: /bin/sh -c "echo '192.168.56.10 staging.domain.com' > /etc/hosts && npm run dev"
+    volumes:
+      - ./src:/app
+      - ~/.ssh:/root/.ssh:ro
+    ports:
+      - 3000:3000
+      - 9229:9229
+    environment:
+      NODE_ENV: development
+
+  db:
+    restart: "no"
+    ports:
+      - 5432:5432
+
+  db_admin:
+    restart: "no"
+    image: dpage/pgadmin4:latest
+    networks:
+      - backend
+    volumes:
+      - db_admin:/var/lib/pgadmin
+    ports:
+      - 8000:80
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin
+      PGADMIN_DEFAULT_PASSWORD: admin
+
+  selenium:
+    restart: "no"
+    ports:
+      - 4444:4444

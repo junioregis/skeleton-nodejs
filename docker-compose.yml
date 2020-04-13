@@ -1,0 +1,48 @@
+version: "3.7"
+
+volumes:
+  db:
+  uploads:
+
+networks:
+  backend:
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        IMAGE: node:13-alpine
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - uploads:/app/uploads
+    networks:
+      - backend
+    expose:
+      - 3000
+    depends_on:
+      - db
+      - selenium
+
+  db:
+    image: postgres:12-alpine
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - backend
+    expose:
+      - 5432
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  selenium:
+    image: selenium/standalone-chrome:latest
+    volumes:
+      - /dev/shm:/dev/shm
+    networks:
+      - backend
+    expose:
+      - 4444

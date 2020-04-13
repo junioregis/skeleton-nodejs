@@ -1,0 +1,9 @@
+# System
+**.DS_Store
+
+# Keep
+!**/.keep
+
+# Source
+src/node_modules
+src/uploads

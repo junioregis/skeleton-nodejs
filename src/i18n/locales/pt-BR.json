@@ -1,0 +1,23 @@
+{
+  "server": {
+    "error": "Ocorreu um erro no servidor",
+    "bad_request": "Requisição inválida"
+  },
+  "auth": {
+    "welcome": "Bem vindo(a) $1!",
+    "welcome_again": "Bem vindo(a) novamente $1!",
+    "provider": {
+      "logged_another_account": "Você já logou com uma outra conta social"
+    }
+  },
+  "profile": {
+    "update": {
+      "successful": "Perfil atualizado com sucesso!"
+    }
+  },
+  "validations": {
+    "default": {
+      "required": "Necessário"
+    }
+  }
+}

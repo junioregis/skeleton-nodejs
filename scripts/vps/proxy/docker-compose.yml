@@ -1,0 +1,56 @@
+version: "3.7"
+
+networks:
+  default:
+    external:
+      name: proxy
+
+volumes:
+  certs:
+  vhost:
+  html:
+  conf:
+  portainer:
+
+services:
+  proxy:
+    restart: always
+    image: nginx:1.17
+    container_name: proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - certs:/etc/nginx/certs:ro
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - conf:/etc/nginx/conf.d
+
+  watcher:
+    restart: always
+    image: jwilder/docker-gen:0.7.0
+    container_name: watcher
+    command: -notify-sighup proxy -watch -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs:ro
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - conf:/etc/nginx/conf.d
+      - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
+    depends_on:
+      - proxy
+
+  portainer:
+    restart: always
+    image: portainer/portainer:latest
+    container_name: portainer
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer:/data
+    expose:
+      - 9000
+    environment:
+      VIRTUAL_HOST: portainer.domain.com
+      VIRTUAL_PORT: 9000
