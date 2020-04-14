@@ -1,8 +1,4 @@
-# 6.1. Endpoints
-
-## Auth
-
-> `POST /auth`
+# POST /auth
 
 Headers:
 
@@ -37,7 +33,7 @@ Result:
 }
 ```
 
-> `POST /auth/refresh`
+# POST /auth/refresh
 
 Headers:
 
@@ -71,7 +67,7 @@ Result:
 }
 ```
 
-> `POST /auth/revoke`
+# POST /auth/revoke
 
 Headers:
 
@@ -92,7 +88,7 @@ Body:
 }
 ```
 
-> `GET /profile/me`
+# GET /profile/me
 
 Headers:
 
@@ -118,7 +114,7 @@ Result:
 }
 ```
 
-> `PUT /profile/me`
+# PUT /profile/me
 
 Headers:
 
@@ -152,7 +148,7 @@ Result:
 }
 ```
 
-> `GET /img/profiles/:user_id`
+# GET /img/profiles/:user_id
 
 Headers:
 
