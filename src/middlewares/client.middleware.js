@@ -10,10 +10,13 @@ module.exports = async (req, res, next) => {
         id: clientId,
         secret: clientSecret,
       },
+      attributes: {
+        exclude: ["secret"],
+      },
     });
 
     if (client !== null) {
-      req.client = client.name;
+      req.client = client;
       next();
     } else {
       res.status(401).json();

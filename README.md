@@ -65,7 +65,14 @@ It is responsible for checking the version of the API to be called. Builds `req.
 
 > Client
 
-It is responsible for verifying the client's credentials (`client_id` e `client_secret`). Builds `req.client (STRING)`:
+It is responsible for verifying the client's credentials (`client_id` e `client_secret`). Builds `req.client`:
+
+```js
+{
+  "id": UUID,
+  "name": STRING,
+}
+```
 
 > Geo
 

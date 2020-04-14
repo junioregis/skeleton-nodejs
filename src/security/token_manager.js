@@ -70,7 +70,7 @@ exports.create = async (clientId, userId, scopes, transaction = null) => {
 };
 
 exports.refresh = async (refreshToken) => {
-  var newToken;
+  var newToken = null;
 
   await db.sequelize.transaction(async (transaction) => {
     const token = await db.tokens.findOne({

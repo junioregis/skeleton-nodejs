@@ -60,9 +60,7 @@ async function rollback(stage) {
     published = true;
   } catch (e) {
     logger.e(`[err] ${e}`, { space: 2 });
-
-    // TODO: Rollback to previous release
-    //await client.exec(`rm ${config.paths.lockFile}`, config);
+    await client.exec(`rm ${config.paths.lockFile}`, config);
   }
 
   if (published) {

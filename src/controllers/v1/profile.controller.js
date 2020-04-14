@@ -16,23 +16,27 @@ exports.validate = (method) => {
       return [
         body("name")
           .exists()
+          .notEmpty()
           .withMessage((value, { req }) =>
             i18n.t(req.geo.lang, "validations.default.required")
           ),
         body("birthday")
           .isInt()
           .exists()
+          .notEmpty()
           .withMessage((value, { req }) =>
             i18n.t(req.geo.lang, "validations.default.required")
           ),
         body("gender")
           .isIn(db.profiles.genders)
           .exists()
+          .notEmpty()
           .withMessage((value, { req }) =>
             i18n.t(req.geo.lang, "validations.default.required")
           ),
         body("photo")
           .exists()
+          .notEmpty()
           .withMessage((value, { req }) =>
             i18n.t(req.geo.lang, "validations.default.required")
           ),
@@ -51,7 +55,6 @@ exports.me = async (req, res, next) => {
     result.photo = path.join(imagesPath, currentUser.id);
 
     return res.send({
-      meta: {},
       result: result,
     });
   } catch (e) {

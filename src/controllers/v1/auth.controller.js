@@ -1,3 +1,5 @@
+const i18n = require("../../i18n");
+
 const repository = require("../../repositories/auth.repository");
 
 const { body, validationResult } = require("express-validator/check");
@@ -8,16 +10,19 @@ exports.validate = (method) => {
       return [
         body("grant_type")
           .exists()
+          .notEmpty()
           .withMessage((value, { req }) =>
             i18n.t(req.geo.lang, "validations.default.required")
           ),
         body("provider")
           .exists()
+          .notEmpty()
           .withMessage((value, { req }) =>
             i18n.t(req.geo.lang, "validations.default.required")
           ),
         body("access_token")
           .exists()
+          .notEmpty()
           .withMessage((value, { req }) =>
             i18n.t(req.geo.lang, "validations.default.required")
           ),
@@ -27,6 +32,7 @@ exports.validate = (method) => {
       return [
         body("refresh_token")
           .exists()
+          .notEmpty()
           .withMessage((value, { req }) =>
             i18n.t(req.geo.lang, "validations.default.required")
           ),
@@ -36,6 +42,7 @@ exports.validate = (method) => {
       return [
         body("access_token")
           .exists()
+          .notEmpty()
           .withMessage((value, { req }) =>
             i18n.t(req.geo.lang, "validations.default.required")
           ),
@@ -89,9 +96,13 @@ exports.refresh = async (req, res, next) => {
     if (typeof refreshToken !== "undefined") {
       const token = await repository.refresh(refreshToken);
 
-      return res.send(token);
+      if (token !== null) {
+        return res.send(token);
+      } else {
+        return res.status(401).json();
+      }
     } else {
-      return res.status(401).json();
+      return res.status(404).json();
     }
   } catch (e) {
     next(e);
