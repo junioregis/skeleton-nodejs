@@ -1,8 +1,17 @@
+const colors = require("colors");
+
 const config = require("../config");
 const slack = require("./slack.service");
 
 function send(type, text, sendToSlack = true) {
-  console.log(text);
+  switch (type) {
+    case "info":
+      console.log(colors.bgBlue(text));
+      break;
+    case "error":
+      console.log(colors.bgRed(text));
+      break;
+  }
 
   if (!config.isDevelopment) {
     if (sendToSlack) {

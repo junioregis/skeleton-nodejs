@@ -74,7 +74,7 @@ app.use((err, req, res, next) => {
     message = "server.bad_request";
   } else {
     message = "server.error";
-    log.e(err);
+    log.e(`[server] ${err}`);
   }
 
   return res.status(status).json({
@@ -87,5 +87,5 @@ googleCrapper.start();
 
 // Start Server
 app.listen(PORT, HOST, () => {
-  log.i("server started!");
+  log.i("[server] server started!");
 });

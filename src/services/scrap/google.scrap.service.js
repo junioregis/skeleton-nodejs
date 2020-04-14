@@ -22,7 +22,7 @@ function start() {
 
       const title = await item.getText();
 
-      log.i(title);
+      log.i(`[scrap] ${title}`);
     });
   });
 }

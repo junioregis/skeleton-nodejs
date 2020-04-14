@@ -17,9 +17,9 @@ class Mailer {
 
     this.transporter.verify(function (error, success) {
       if (error) {
-        log.e(error);
+        log.e(`[mailer] ${error}`);
       } else {
-        log.i(success);
+        log.i(`[mailer] ${success}`);
       }
     });
   }
@@ -33,7 +33,7 @@ class Mailer {
         html: options.html,
       });
     } catch (e) {
-      log.e(e);
+      log.e(`[mailer] ${e}`);
     }
   }
 }

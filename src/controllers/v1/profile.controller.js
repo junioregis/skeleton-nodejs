@@ -6,7 +6,7 @@ const i18n = require("../../i18n");
 
 const imagesPath = "/img/profiles";
 
-const { body, validationResult } = require("express-validator/check");
+const { body, validationResult } = require("express-validator");
 
 const db = require("../../db");
 

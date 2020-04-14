@@ -2,6 +2,32 @@
 
 This is a complete guide to create Dockerized NodeJS Api.
 
+# Features
+
+> VPS
+
+- Docker configurator
+- Nginx for reverse proxy configurator
+- Letsencrypt ready
+- Portainer for container management
+- VirtualBox configuration (for test)
+
+> API
+
+- API versioning
+- Rate Limiter
+- OAuth2 implementation
+- Social login with Facebook and Google
+- Slack integration for logging
+- Scheduler for running background tasks
+- Mailer helper
+- Internationalization helper
+- Web scraper
+- Uploads ready
+- Postman file (for test)
+- CLI for deploy to VPS
+- Database admin (development only)
+
 # Arquitecture
 
 ## Config
@@ -323,6 +349,7 @@ Logging:
 Util:
 
 - [nodemon](https://www.npmjs.com/package/nodemon)
+- [uuid](https://www.npmjs.com/package/uuid)
 - [moment](https://www.npmjs.com/package/moment)
 - [geoip-lite](https://www.npmjs.com/package/node-geoip)
 - [ssh2](https://www.npmjs.com/package/ssh2)

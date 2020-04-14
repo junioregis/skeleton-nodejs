@@ -8,7 +8,7 @@ class CronService {
   }
 
   start(name, cron, fn) {
-    log.i(`creating task: ${name} (${cron})`);
+    log.i(`[cron] creating task: "${name}" (${cron})`);
 
     const task = {
       name: name,

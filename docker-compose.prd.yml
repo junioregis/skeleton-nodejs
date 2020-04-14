@@ -10,7 +10,7 @@ volumes:
 services:
   app:
     restart: always
-    command: npm run prd
+    command: /bin/sh -c "npm install && npm run prd"
     networks:
       - proxy
     volumes:

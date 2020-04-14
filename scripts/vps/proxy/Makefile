@@ -1,6 +1,6 @@
 APP  := main
 
-CMD := docker-compose --project-name=$(APP) --file docker-compose.yml
+CMD := docker-compose --project-name=$(APP)
 
 start:
 	$(info Starting)

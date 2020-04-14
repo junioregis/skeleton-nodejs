@@ -2,7 +2,7 @@ const i18n = require("../../i18n");
 
 const repository = require("../../repositories/auth.repository");
 
-const { body, validationResult } = require("express-validator/check");
+const { body, validationResult } = require("express-validator");
 
 exports.validate = (method) => {
   switch (method) {
@@ -79,7 +79,11 @@ exports.auth = async (req, res, next) => {
       return res.status(401).json();
     }
   } catch (e) {
-    next(e);
+    return res.status(404).send({
+      meta: {
+        message: i18n.t(req.geo.lang, "auth.provider.error", req.body.provider),
+      },
+    });
   }
 };
 
