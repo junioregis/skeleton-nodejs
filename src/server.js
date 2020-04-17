@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-
-const googleCrapper = require("./services/scrap/google.scrap.service");
+const compression = require("compression");
+const cors = require("cors");
 
 const middlewares = require("./middlewares");
 const routes = require("./routes");
@@ -9,13 +9,27 @@ const i18n = require("./i18n");
 
 const { log } = require("./services");
 
+const {
+  ProviderError,
+  UnauthorizedError,
+  ValidationError,
+} = require("./errors");
+
+const googleCrapper = require("./services/scrap/google.scrap.service");
+
 const PORT = 3000;
 const HOST = "0.0.0.0";
 
 const app = express();
 
-// Middlewares: Rate Limit
+// Middleware: Rate Limit
 app.use(middlewares.rateLimit);
+
+// Middleware: Compression
+app.use(compression());
+
+// Middleware: CORS
+app.use(cors());
 
 // Static
 app.use(
@@ -25,9 +39,13 @@ app.use(
   })
 );
 
-// Middlewares
+// Middleware: API Versioning
 app.use(middlewares.apiVersion);
+
+// Middleware: Client Credentials
 app.use(middlewares.client);
+
+// Middleware: Geo
 app.use(middlewares.geo);
 
 // Uploads
@@ -66,20 +84,23 @@ app.post("*", function (req, res) {
 
 // Error Handler
 app.use((err, req, res, next) => {
-  const status = err.status;
-
-  var message = "";
-
-  if (status >= 400 && status < 500) {
-    message = "server.bad_request";
+  if (err instanceof ProviderError) {
+    return res.status(406).send({
+      meta: {
+        message: i18n.t(req.geo.lang, "auth.provider.error", err.provider),
+      },
+    });
+  } else if (err instanceof UnauthorizedError) {
+    return res.status(401).json();
+  } else if (err instanceof ValidationError) {
+    return res.status(422).json({ errors: err.errors.array() });
   } else {
-    message = "server.error";
-    log.e(`[server] ${err}`);
-  }
+    log.e(err);
 
-  return res.status(status).json({
-    meta: { message: i18n.t(req.geo.lang, message) },
-  });
+    return res.status(req.status || 500).json({
+      meta: { message: i18n.t(req.geo.lang, "server.error") },
+    });
+  }
 });
 
 // Cron Services

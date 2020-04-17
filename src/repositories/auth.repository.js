@@ -4,152 +4,159 @@ const services = require("../services");
 
 const tokenManager = require("../security/token_manager");
 
-const mailer = require("../mailer");
+const { mailer } = require("../services");
 
-exports.auth = async (client, providerName, accessToken, geo) => {
-  var info;
+class AuthRepository {
+  async auth(client, providerName, accessToken, geo) {
+    var info;
 
-  switch (providerName) {
-    case "facebook":
-      info = await services.social.facebook.getUser(accessToken);
-      break;
-    case "google":
-      info = await services.social.google.getUser(accessToken);
-      break;
-    default:
-      return {
-        type: "error",
-        token: null,
-      };
-  }
-
-  const user = await db.users.findOne({
-    where: {
-      email: info.email,
-    },
-    include: [
-      {
-        model: db.providers,
-        as: "providers",
-      },
-    ],
-  });
-
-  const profile = {
-    name: info.name,
-    birthday: info.birthday,
-    gender: info.gender,
-  };
-
-  const provider = {
-    name: providerName,
-    id: info.provider_id,
-  };
-
-  const preference = {
-    locale: geo.lang,
-    unit: geo.unit,
-  };
-
-  var type;
-  var token;
-
-  if (user !== null) {
-    const providerInfo = user.providers.find(
-      (item) => item.name === providerName
-    );
-
-    if (typeof providerInfo !== "undefined") {
-      type = "signin";
-
-      token = await tokenManager.create(
-        client.id,
-        user.id,
-        tokenManager.scopes.user
-      );
-    } else {
-      return {
-        type: "error",
-      };
+    switch (providerName) {
+      case "facebook":
+        info = await services.social.facebook.getUser(accessToken);
+        break;
+      case "google":
+        info = await services.social.google.getUser(accessToken);
+        break;
+      default:
+        return {
+          type: "error",
+          token: null,
+        };
     }
-  } else {
-    type = "signup";
 
-    await db.sequelize.transaction(async (transaction) => {
-      const newUser = await db.users.create(
+    const user = await db.users.findOne({
+      where: {
+        email: info.email,
+      },
+      include: [
         {
-          email: info.email,
-          providers: [provider],
-          profile: profile,
-          preference: preference,
+          model: db.providers,
+          as: "providers",
         },
-        {
-          include: [
-            {
-              model: db.providers,
-              as: "providers",
-            },
-            {
-              model: db.profiles,
-              as: "profile",
-            },
-            {
-              model: db.preferences,
-              as: "preference",
-            },
-          ],
-          transaction: transaction,
-        }
+      ],
+    });
+
+    const profile = {
+      name: info.name,
+      birthday: info.birthday,
+      gender: info.gender,
+    };
+
+    const provider = {
+      name: providerName,
+      id: info.provider_id,
+    };
+
+    const preference = {
+      locale: geo.lang,
+      unit: geo.unit,
+    };
+
+    var type;
+    var token;
+
+    if (user !== null) {
+      const providerInfo = user.providers.find(
+        (item) => item.name === providerName
       );
 
-      token = await tokenManager.create(
-        client.id,
-        newUser.id,
-        tokenManager.scopes.user,
-        transaction
-      );
+      if (typeof providerInfo !== "undefined") {
+        type = "signin";
 
-      try {
-        const response = await util.net.get(info.photo);
+        token = await tokenManager.create(
+          client.id,
+          user.id,
+          tokenManager.scopes.user
+        );
+      } else {
+        return {
+          type: "error",
+        };
+      }
+    } else {
+      type = "signup";
 
-        if (response.statusCode === 200) {
-          const data = response.body;
+      await db.sequelize.transaction(async (transaction) => {
+        const newUser = await db.users.create(
+          {
+            email: info.email,
+            providers: [provider],
+            profile: profile,
+            preference: preference,
+          },
+          {
+            include: [
+              {
+                model: db.providers,
+                as: "providers",
+              },
+              {
+                model: db.profiles,
+                as: "profile",
+              },
+              {
+                model: db.preferences,
+                as: "preference",
+              },
+            ],
+            transaction: transaction,
+          }
+        );
 
-          await db.profiles.savePhoto(data, newUser.id);
-        } else {
+        token = await tokenManager.create(
+          client.id,
+          newUser.id,
+          tokenManager.scopes.user,
+          transaction
+        );
+
+        try {
+          const response = await util.net.get(info.photo);
+
+          if (response.statusCode === 200) {
+            const data = response.body;
+
+            await db.profiles.savePhoto(data, newUser.id);
+          } else {
+            await transaction.rollback();
+          }
+        } catch (e) {
           await transaction.rollback();
         }
-      } catch (e) {
-        await transaction.rollback();
-      }
 
-      try {
-        const options = {
-          to: newUser.email,
-          subject: "Welcome!",
-          html: "<b>Hello World!</b>",
-        };
+        try {
+          const options = {
+            template: "signup",
+            locale: geo.lang,
+            to: newUser.email,
+            locals: {
+              name: newUser.profile.name,
+            },
+          };
 
-        await mailer.send(options);
-      } catch (e) {
-        await transaction.rollback();
-      }
-    });
+          await mailer.send(options);
+        } catch (e) {
+          // Ignore
+        }
+      });
+    }
+
+    delete token.client_id;
+    delete token.user_id;
+
+    return {
+      type: type,
+      token: token,
+    };
   }
 
-  delete token.client_id;
-  delete token.user_id;
+  async refresh(refreshToken) {
+    return tokenManager.refresh(refreshToken);
+  }
 
-  return {
-    type: type,
-    token: token,
-  };
-};
+  async revoke(accessToken) {
+    return tokenManager.revoke(accessToken);
+  }
+}
 
-exports.refresh = async (refreshToken) => {
-  return tokenManager.refresh(refreshToken);
-};
-
-exports.revoke = async (accessToken) => {
-  return tokenManager.revoke(accessToken);
-};
+module.exports = new AuthRepository();

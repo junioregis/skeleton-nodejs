@@ -1,3 +1,5 @@
+const { UnauthorizedError } = require("../errors");
+
 const db = require("../db");
 const util = require("../util");
 
@@ -17,15 +19,15 @@ module.exports = async (req, res, next) => {
           include: [
             {
               model: db.profiles,
-              as: "profile"
+              as: "profile",
             },
             {
               model: db.preferences,
-              as: "preference"
-            }
-          ]
-        }
-      ]
+              as: "preference",
+            },
+          ],
+        },
+      ],
     });
 
     if (token !== null) {
@@ -38,12 +40,12 @@ module.exports = async (req, res, next) => {
         req.currentUser = token.user;
         next();
       } else {
-        res.status(401).json();
+        throw new UnauthorizedError();
       }
     } else {
-      res.status(401).json();
+      throw new UnauthorizedError();
     }
   } else {
-    res.status(401).json();
+    throw new UnauthorizedError();
   }
 };

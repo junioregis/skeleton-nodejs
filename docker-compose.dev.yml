@@ -6,7 +6,9 @@ volumes:
 services:
   app:
     restart: "no"
-    command: /bin/sh -c "echo '192.168.56.10 staging.domain.com' > /etc/hosts && npm run dev"
+    # If you want to test on VirtualBox, uncomment the line below
+    #command: /bin/sh -c "echo '192.168.56.10 staging.domain.com' > /etc/hosts && npm run dev"
+    command: npm run dev
     volumes:
       - ./src:/app
       - ~/.ssh:/root/.ssh:ro

@@ -1,7 +1,6 @@
 {
   "server": {
-    "error": "Internal server error",
-    "bad_request": "Bad request"
+    "error": "Internal server error"
   },
   "auth": {
     "welcome": "Welcome $1!",

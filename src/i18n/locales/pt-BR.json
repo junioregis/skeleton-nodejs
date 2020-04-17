@@ -1,7 +1,6 @@
 {
   "server": {
-    "error": "Ocorreu um erro no servidor",
-    "bad_request": "Requisição inválida"
+    "error": "Ocorreu um erro no servidor"
   },
   "auth": {
     "welcome": "Bem vindo(a) $1!",

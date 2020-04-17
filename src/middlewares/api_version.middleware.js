@@ -1,3 +1,5 @@
+const { UnauthorizedError } = require("../errors");
+
 const API_VERSIONS = [1];
 
 module.exports = (req, res, next) => {
@@ -10,9 +12,9 @@ module.exports = (req, res, next) => {
       req.apiVersion = version;
       next();
     } else {
-      res.status(401).json();
+      throw new UnauthorizedError();
     }
   } else {
-    res.status(401).json();
+    throw new UnauthorizedError();
   }
 };

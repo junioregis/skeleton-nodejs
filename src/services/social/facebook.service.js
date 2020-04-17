@@ -1,5 +1,7 @@
 const util = require("../../util");
 
+const { ProviderError } = require("../../errors");
+
 const VERSION = "6.0";
 const URL = `https://graph.facebook.com/v${VERSION}/me`;
 
@@ -9,7 +11,7 @@ const FIELDS = [
   "email",
   "gender",
   "birthday",
-  "picture.width(720).height(720)"
+  "picture.width(720).height(720)",
 ];
 
 async function getUser(accessToken) {
@@ -17,7 +19,7 @@ async function getUser(accessToken) {
     access_token: accessToken,
     fields: FIELDS.join(","),
     method: "get",
-    format: "json"
+    format: "json",
   };
 
   const response = await util.net.get(URL, params);
@@ -37,13 +39,13 @@ async function getUser(accessToken) {
       name: json["name"],
       gender: gender,
       birthday: birthday,
-      photo: json["picture"]["data"]["url"]
+      photo: json["picture"]["data"]["url"],
     };
   } else {
-    throw new Error("facebook error");
+    throw new ProviderError("facebook");
   }
 }
 
 module.exports = {
-  getUser
+  getUser,
 };

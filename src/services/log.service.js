@@ -8,6 +8,9 @@ function send(type, text, sendToSlack = true) {
     case "info":
       console.log(colors.bgBlue(text));
       break;
+    case "warning":
+      console.log(colors.bgYellow(colors.black(text)));
+      break;
     case "error":
       console.log(colors.bgRed(text));
       break;
@@ -16,11 +19,11 @@ function send(type, text, sendToSlack = true) {
   if (!config.isDevelopment) {
     if (sendToSlack) {
       switch (type) {
-        case "info":
-          slack.i(text);
-          break;
         case "error":
           slack.e(text);
+          break;
+        default:
+          slack.i(text);
           break;
       }
     }
@@ -29,6 +32,10 @@ function send(type, text, sendToSlack = true) {
 
 exports.i = (text, sendToSlack = true) => {
   send("info", text, sendToSlack);
+};
+
+exports.w = (text, sendToSlack = true) => {
+  send("warning", text, sendToSlack);
 };
 
 exports.e = (text, sendToSlack = true) => {

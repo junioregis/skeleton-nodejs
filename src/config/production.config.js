@@ -4,7 +4,7 @@ module.exports = {
   },
   mailer: {
     host: "",
-    port: 0,
+    port: 465,
     user: "",
     pass: "",
     from: "",

@@ -1,3 +1,5 @@
+const { UnauthorizedError } = require("../errors");
+
 const db = require("../db");
 
 module.exports = async (req, res, next) => {
@@ -19,9 +21,9 @@ module.exports = async (req, res, next) => {
       req.client = client;
       next();
     } else {
-      res.status(401).json();
+      throw new UnauthorizedError();
     }
   } else {
-    res.status(401).json();
+    throw new UnauthorizedError();
   }
 };

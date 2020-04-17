@@ -1,5 +1,7 @@
 const util = require("../../util");
 
+const { ProviderError } = require("../../errors");
+
 const VERSION = "1";
 const URL = `https://people.googleapis.com/v${VERSION}/people/me`;
 
@@ -58,7 +60,7 @@ async function getUser(accessToken) {
       photo: photo,
     };
   } else {
-    throw new Error("google error");
+    throw new ProviderError("google");
   }
 }
 

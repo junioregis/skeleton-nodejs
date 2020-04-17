@@ -57,16 +57,16 @@ The security files are located in the folder `security`:
 
 Manages users' tokens.
 
-## Controllers & Routes
+## Controllers, Routes and Validations
 
 Controllers are separated by folder named by the version number of the API.
 
-Each controller has a corresponding route:
+Each controller has a corresponding validation and route:
 
-| Controller                             | Route                        |
-| -------------------------------------- | ---------------------------- |
-| `controllers/v1/auth.controller.js`    | `routes/v1/auth.route.js`    |
-| `controllers/v1/profile.controller.js` | `routes/v1/profile.route.js` |
+| Controller                             | Validation                                         | Route                        |
+| -------------------------------------- | -------------------------------------------------- | ---------------------------- |
+| `controllers/v1/auth.controller.js`    | `controllers/v1/validations/auth.validation.js`    | `routes/v1/auth.route.js`    |
+| `controllers/v1/profile.controller.js` | `controllers/v1/validations/profile.validation.js` | `routes/v1/profile.route.js` |
 
 ## Repositories
 
@@ -273,6 +273,13 @@ scraper.nav("https://www.google.com", async (driver) => {
 });
 ```
 
+> Mailer
+
+All email templates are named as `[name].template.[locale].html` and located in the folder `services/mailer/templates`.
+
+- `signup.template.en.html`
+- `signup.template.pt-BR.html`
+
 > Logging
 
 - `log.service.js`
@@ -310,20 +317,22 @@ Static public files are located in the folder `public`.
 
 Main:
 
-- [express](https://www.npmjs.com/package/express)
 - [body-parser](https://www.npmjs.com/package/body-parser)
 - [crypto-js](https://www.npmjs.com/package/crypto-js)
+- [express](https://www.npmjs.com/package/express)
 
 Middlewares:
 
+- [compression](https://www.npmjs.com/package/compression)
+- [cors](https://www.npmjs.com/package/cors)
 - [express-rate-limit](https://www.npmjs.com/package/express-rate-limit)
 - [express-validator](https://www.npmjs.com/package/express-validator)
 
 Database:
 
-- [sequelize](https://www.npmjs.com/package/sequelize)
 - [pg](https://www.npmjs.com/package/pg)
 - [pg-hstore](https://www.npmjs.com/package/pg-hstore)
+- [sequelize](https://www.npmjs.com/package/sequelize)
 
 Scheduler:
 
@@ -335,6 +344,7 @@ Image Processor:
 
 Mailer:
 
+- [ejs](https://www.npmjs.com/package/ejs)
 - [nodemailer](https://www.npmjs.com/package/nodemailer)
 
 Scraping:
@@ -343,16 +353,16 @@ Scraping:
 
 Logging:
 
-- [@slack/webhook](https://www.npmjs.com/package/@slack/webhook)
 - [colors](https://www.npmjs.com/package/colors.js)
+- [@slack/webhook](https://www.npmjs.com/package/@slack/webhook)
 
 Util:
 
-- [nodemon](https://www.npmjs.com/package/nodemon)
-- [uuid](https://www.npmjs.com/package/uuid)
-- [moment](https://www.npmjs.com/package/moment)
 - [geoip-lite](https://www.npmjs.com/package/node-geoip)
+- [moment](https://www.npmjs.com/package/moment)
+- [nodemon](https://www.npmjs.com/package/nodemon)
 - [ssh2](https://www.npmjs.com/package/ssh2)
+- [uuid](https://www.npmjs.com/package/uuid)
 
 # Docker Images
 

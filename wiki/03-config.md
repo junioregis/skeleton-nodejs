@@ -10,7 +10,21 @@ With Two-step verification:
 
 `GMail > My Account -> Sign-in & security -> Signing in to Google -> App passwords`
 
-# 3.2. Configure Social Providers
+Edit `config/[environment].config.js`:
+
+```js
+{
+  mailer: {
+    host: "smtp.gmail.com",
+    port: 465,
+    user: "email@domain.com",
+    pass: "********",
+    from: "Domain",
+  },
+}
+```
+
+# 3.2. Social Providers
 
 ## 3.2.1. Google
 
@@ -32,7 +46,7 @@ user_gender
 user_birthday
 ```
 
-# 3.3. Configure Deploy
+# 3.3. Deployer
 
 The configuration file is located in `deploy/config.js`.
 
@@ -70,6 +84,16 @@ The configuration file is located in `deploy/config.js`.
       host: STRING, // Host server
       branch: STRING, // Branch name
     },
+  },
+}
+```
+
+## 3.4. Slack
+
+```js
+{
+  slack: {
+    webHook: "https://hooks.slack.com/services/...",
   },
 }
 ```

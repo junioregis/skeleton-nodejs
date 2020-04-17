@@ -1,7 +1,9 @@
 const mailer = require("nodemailer");
+const ejs = require("ejs");
+const path = require("path");
 
-const config = require("../config");
-const log = require("../services/log.service");
+const config = require("../../config");
+const log = require("../log.service");
 
 class Mailer {
   constructor() {
@@ -19,18 +21,42 @@ class Mailer {
       if (error) {
         log.e(`[mailer] ${error}`);
       } else {
-        log.i(`[mailer] ${success}`);
+        log.i(`[mailer] ready`);
       }
+    });
+  }
+
+  async render(options) {
+    const template = path.join(
+      __dirname,
+      "templates",
+      `${options.template}.template.${options.locale}.html`
+    );
+
+    return new Promise((resolve, reject) => {
+      ejs.renderFile(template, options.locals, {}, (err, str) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(str);
+        }
+      });
     });
   }
 
   async send(options) {
     try {
+      const html = await this.render({
+        template: options.template,
+        locale: options.locale,
+        locals: options.locals,
+      });
+
       await this.transporter.sendMail({
         from: `${config.mailer.from} <${config.mailer.user}>`,
         to: options.to,
         subject: options.subject,
-        html: options.html,
+        html: html,
       });
     } catch (e) {
       log.e(`[mailer] ${e}`);
