@@ -176,7 +176,7 @@ It is responsible for controlling caches for routes.
 Update locations. Will update file `/app/src/geo/geo.db` :
 
 ```bash
-bash scripts/dev.sh geocoder update
+make geo-update
 ```
 
 > Distance
@@ -268,13 +268,7 @@ The seed files are located in the folder `db/pg/seed`. The seed files for `devel
 If you want to seed `development` with fake data:
 
 ```bash
-bash scripts/dev.sh db-seed
-```
-
-If you want to delete fake data for `development` :
-
-```bash
-bash scripts/dev.sh db-seed-drop
+make db-seed
 ```
 
 ## Internationalization
