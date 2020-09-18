@@ -1,0 +1,922 @@
+{
+  "info": {
+    "_postman_id": "05edf3b9-6b64-4811-b033-4ed08fb93d04",
+    "name": "SKELETON",
+    "description": "",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "/auth",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "fd0f7ff7-d88e-47e2-8743-174022f29b34",
+            "exec": [
+              "response = JSON.parse(responseBody);",
+              "",
+              "type = response.type;",
+              "access_token = response.access_token;",
+              "refresh_token = response.refresh_token;",
+              "",
+              "pm.environment.set(\"access_token\", access_token);",
+              "pm.environment.set(\"refresh_token\", refresh_token);",
+              "",
+              "pm.environment.set(\"auth\", type + \" \" + access_token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "client_id",
+            "value": "{{client_id}}",
+            "type": "text"
+          },
+          {
+            "key": "client_secret",
+            "value": "{{client_secret}}",
+            "type": "text"
+          },
+          {
+            "key": "api_version",
+            "value": "{{api_version}}",
+            "type": "text"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"grant_type\": \"provider\",\n\t\"provider\": \"{{provider_name}}\",\n\t\"access_token\": \"{{provider_access_token}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            },
+            "urlencoded": {}
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/auth",
+          "host": ["{{base_url}}"],
+          "path": ["auth"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/auth/refresh",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "f3460502-37eb-4365-8887-477e96eeca5b",
+            "exec": [
+              "response = JSON.parse(responseBody);",
+              "",
+              "type = response.type;",
+              "access_token = response.access_token;",
+              "refresh_token = response.refresh_token;",
+              "",
+              "pm.environment.set(\"access_token\", access_token);",
+              "pm.environment.set(\"refresh_token\", refresh_token);",
+              "",
+              "pm.environment.set(\"auth\", type + \" \" + access_token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "client_id",
+            "value": "{{client_id}}",
+            "type": "text"
+          },
+          {
+            "key": "client_secret",
+            "value": "{{client_secret}}",
+            "type": "text"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "value": "{{auth}}",
+            "type": "text"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"refresh_token\":  \"{{refresh_token}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            },
+            "urlencoded": {}
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/refresh",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "refresh"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/auth/revoke",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "client_id",
+            "value": "{{client_id}}",
+            "type": "text"
+          },
+          {
+            "key": "client_secret",
+            "value": "{{client_secret}}",
+            "type": "text"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "value": "{{auth}}",
+            "type": "text"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"access_token\": \"{{access_token}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            },
+            "urlencoded": {}
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/revoke",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "revoke"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/auth/revoke/all",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "type": "text",
+            "value": "{{latitude}}"
+          },
+          {
+            "key": "longitude",
+            "type": "text",
+            "value": "{{longitude}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/auth/revoke/all",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "revoke", "all"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/preference",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "b36bc9f4-457b-4a1a-93ff-5c82f0d688ae",
+            "exec": [""],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "type": "text",
+            "value": "{{latitude}}"
+          },
+          {
+            "key": "longitude",
+            "type": "text",
+            "value": "{{longitude}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/preference",
+          "host": ["{{base_url}}"],
+          "path": ["preference"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/preference",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "b36bc9f4-457b-4a1a-93ff-5c82f0d688ae",
+            "exec": [""],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "type": "text",
+            "value": "{{latitude}}"
+          },
+          {
+            "key": "longitude",
+            "type": "text",
+            "value": "{{longitude}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"locale\": \"pt-BR\",\n\t\"unit\": \"km\",\n\t\"nearby\": 15\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/preference",
+          "host": ["{{base_url}}"],
+          "path": ["preference"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/profile/me",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "b36bc9f4-457b-4a1a-93ff-5c82f0d688ae",
+            "exec": [
+              "response = JSON.parse(responseBody);",
+              "",
+              "photos = response.result.photos;",
+              "",
+              "if (photos.length > 0) {",
+              "  photo_id = photos[Math.floor(Math.random() * photos.length)].split(\"/profile/me/photo/\")[1];",
+              "} else {",
+              "  photo_id = \"\";",
+              "}",
+              "",
+              "pm.environment.set(\"photo_id\", photo_id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "client_id",
+            "value": "{{client_id}}",
+            "type": "text"
+          },
+          {
+            "key": "client_secret",
+            "value": "{{client_secret}}",
+            "type": "text"
+          },
+          {
+            "key": "api_version",
+            "value": "{{api_version}}",
+            "type": "text"
+          },
+          {
+            "key": "authorization",
+            "value": "{{auth}}",
+            "type": "text"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/profile/me",
+          "host": ["{{base_url}}"],
+          "path": ["profile", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/profile/me",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\": \"Rick Sanches\",\n\t\"birthday\": 523843200000,\n\t\"gender\": \"male\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/profile/me",
+          "host": ["{{base_url}}"],
+          "path": ["profile", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/profile/me/photo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "/home/junioregis/Desktop/rick-sanches.webp"
+            }
+          ],
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/profile/me/photo",
+          "host": ["{{base_url}}"],
+          "path": ["profile", "me", "photo"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/profile/me/photo/add",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "/home/junioregis/Desktop/megaman.jpg"
+            }
+          ],
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/profile/me/photo/add",
+          "host": ["{{base_url}}"],
+          "path": ["profile", "me", "photo", "add"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/profile/me/photo",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/profile/me/photo",
+          "host": ["{{base_url}}"],
+          "path": ["profile", "me", "photo"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/profile/me/photo/:photo_id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/profile/me/photo/:photo_id",
+          "host": ["{{base_url}}"],
+          "path": ["profile", "me", "photo", ":photo_id"],
+          "variable": [
+            {
+              "key": "photo_id",
+              "value": "{{photo_id}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/profile/me/nearby",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "08a3dd17-6a9e-491d-98a3-b918574bc5cb",
+            "exec": [
+              "response = JSON.parse(responseBody);",
+              "",
+              "users = response.result;",
+              "",
+              "if (users.length > 0) {",
+              "  user_id = users[Math.floor(Math.random() * users.length)].id;",
+              "} else {",
+              "  user_id = \"\";",
+              "}",
+              "",
+              "pm.environment.set(\"user_id\", user_id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "type": "text",
+            "value": "{{latitude}}"
+          },
+          {
+            "key": "longitude",
+            "type": "text",
+            "value": "{{longitude}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/profile/me/nearby",
+          "host": ["{{base_url}}"],
+          "path": ["profile", "me", "nearby"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/profile/:user_id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/profile/:user_id",
+          "host": ["{{base_url}}"],
+          "path": ["profile", ":user_id"],
+          "variable": [
+            {
+              "key": "user_id",
+              "value": "{{user_id}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/profile/:user_id/photo",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/profile/:user_id/photo",
+          "host": ["{{base_url}}"],
+          "path": ["profile", ":user_id", "photo"],
+          "variable": [
+            {
+              "key": "user_id",
+              "value": "{{user_id}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/profile/:user_id/photo/:photo_id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "client_id",
+            "type": "text",
+            "value": "{{client_id}}"
+          },
+          {
+            "key": "client_secret",
+            "type": "text",
+            "value": "{{client_secret}}"
+          },
+          {
+            "key": "api_version",
+            "type": "text",
+            "value": "{{api_version}}"
+          },
+          {
+            "key": "authorization",
+            "type": "text",
+            "value": "{{auth}}"
+          },
+          {
+            "key": "latitude",
+            "value": "{{latitude}}",
+            "type": "text"
+          },
+          {
+            "key": "longitude",
+            "value": "{{longitude}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/profile/:user_id/photo/:photo_id",
+          "host": ["{{base_url}}"],
+          "path": ["profile", ":user_id", "photo", ":photo_id"],
+          "variable": [
+            {
+              "key": "user_id",
+              "value": "{{user_id}}"
+            },
+            {
+              "key": "photo_id",
+              "value": "{{photo_id}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

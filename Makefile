@@ -1,53 +1,34 @@
-APP := skeleton
+APP := skeleton_nodejs
 
-ENV_FILE := deploy.env
-
-ifndef STAGE
-ifneq ("$(wildcard $(ENV_FILE))", "")
-STAGE := $(shell sed -n 's/NODE_ENV=\(.*\)/\1/p' < $(ENV_FILE))
-else
-$(error STAGE is undefined)
-endif
-endif
-
-ifndef DOMAIN
-ifneq ("$(wildcard $(ENV_FILE))", "")
-DOMAIN := $(shell sed -n 's/VIRTUAL_HOST=\(.*\)/\1/p' < $(ENV_FILE))
-else
-$(error DOMAIN is undefined)
-endif
-endif
-
-CMD := docker-compose --project-name=$(APP) \
-                      --file docker-compose.yml \
-                      --file docker-compose.prd.yml
-
-config:
-	$(CMD) config
+APP_CMD := docker-compose --project-name=$(APP)
+DB_CMD  := $(APP_CMD) exec db psql -U postgres -d db -c
 
 build:
-	@echo "NODE_ENV=$(STAGE)\nVIRTUAL_HOST=$(DOMAIN)\nVIRTUAL_PORT=3000\nLETSENCRYPT_HOST=$(DOMAIN)\nLETSENCRYPT_EMAIL=webmaster@$(DOMAIN)" > $(ENV_FILE)
-
-	$(CMD) build
-	$(CMD) pull
+	$(APP_CMD) build
+	$(APP_CMD) pull
 
 start:
-	$(CMD) up -d --remove-orphans
+	$(APP_CMD) up -d --remove-orphans
 
 stop:
-	$(CMD) down
+	$(APP_CMD) down
 
-restart:
-	@make -s start
-	@make -s stop
+api-clients:
+	$(APP_CMD) exec db psql -U postgres -d db -c "SELECT * FROM clients;"
 
-show-clients:
-	${CMD} exec db psql -U postgres -d db -c "SELECT * FROM clients;"
+db-reset:
+	$(DB_CMD) "DROP SCHEMA public CASCADE; CREATE SCHEMA public; CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;"
+	$(APP_CMD) exec redis redis-cli FLUSHALL
+	$(APP_CMD) exec app npm run prepare
+
+geo-update:
+	$(APP_CMD) exec app geo update
+
+terminal:
+	$(APP_CMD) exec app sh
 
 logs:
-	$(CMD) logs -f
+	$(APP_CMD) logs -f app db
 
 help:
-	echo "Usage: make DOMAIN=url \
-	                  STAGE=<staging|production> \
-                      config|first-deploy|deploy|build|start|stop|restart|show-clients|logs|help"
+	@echo "Usage: make build|start|stop|api-clients|db-reset|geo-update|terminal|logs|help"

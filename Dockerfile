@@ -1,24 +1,15 @@
-ARG IMAGE
-
-FROM ${IMAGE}
+FROM node:14-alpine
 
 ARG APP_PATH="/app"
 
-RUN apk add --update-cache \
-    openssh 
-
-RUN npm install -g sequelize-cli
-
 WORKDIR ${APP_PATH}
 
-COPY src/package*.json ./
+COPY ./app/package*.json ./
+
 RUN npm install
 
-COPY src/ ./
+COPY ./app/ ${APP_PATH}
 
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
+EXPOSE 3000 5858 9229
 
-EXPOSE 3000 9229
-
-ENTRYPOINT [ "entrypoint.sh" ]
+CMD npm run dev

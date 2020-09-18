@@ -1,0 +1,38 @@
+{
+  "server": {
+    "error": "Ocorreu um erro no servidor"
+  },
+  "auth": {
+    "welcome": "Bem vindo(a) $1!",
+    "welcome_again": "Bem vindo(a) novamente $1!",
+    "provider": {
+      "error": "Erro ao conectar ao $1",
+      "logged_another_account": "Você já logou com uma outra conta social"
+    }
+  },
+  "preference": {
+    "update": {
+      "successful": "Preferências atualizadas com sucesso!"
+    }
+  },
+  "profile": {
+    "update": {
+      "successful": "Perfil atualizado com sucesso!"
+    },
+    "photo": {
+      "update": {
+        "successful": "Foto atualizada com sucesso!",
+        "error": "Erro ao atualizar foto do perfil"
+      },
+      "add": {
+        "successful": "Foto enviada com sucesso!",
+        "error": "Error ao enviar foto"
+      }
+    }
+  },
+  "validations": {
+    "default": {
+      "required": "Requerido"
+    }
+  }
+}

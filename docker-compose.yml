@@ -2,35 +2,29 @@ version: "3.7"
 
 volumes:
   db:
-  uploads:
-
-networks:
-  backend:
+  db_admin:
+  portainer:
 
 services:
   app:
-    build:
-      context: .
-      args:
-        IMAGE: node:13-alpine
+    build: .
     volumes:
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
-      - uploads:/app/uploads
-    networks:
-      - backend
-    expose:
-      - 3000
+      - ./app:/app
+    ports:
+      - 3000:3000
+      - 5858:5858
+      - 9229:9229
+    environment:
+      NODE_ENV: development
     depends_on:
       - db
+      - redis
       - selenium
 
   db:
-    image: postgres:12-alpine
+    image: mdillon/postgis:11-alpine
     volumes:
       - db:/var/lib/postgresql/data
-    networks:
-      - backend
     expose:
       - 5432
     environment:
@@ -38,11 +32,33 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
+  db_admin:
+    image: dpage/pgadmin4:latest
+    volumes:
+      - db_admin:/var/lib/pgadmin
+    ports:
+      - 8000:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@domain.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+
+  redis:
+    image: redis:5-alpine
+    ports:
+      - 6379:6379
+
   selenium:
     image: selenium/standalone-chrome:latest
     volumes:
       - /dev/shm:/dev/shm
-    networks:
-      - backend
     expose:
       - 4444
+
+  portainer:
+    image: portainer/portainer:latest
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer:/data
+    ports:
+      - 9000:9000

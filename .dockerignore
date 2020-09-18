@@ -1,6 +1,9 @@
-.git
+.git*
+.vscode
 
-*Dockerfile*
-*docker-compose*
+**/Dockerfile*
+**/docker-compose*
 
-src/node_modules
+/docs
+
+Makefile

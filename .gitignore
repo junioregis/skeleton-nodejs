@@ -1,9 +1,9 @@
 # System
 **.DS_Store
 
+# Sources
+**/node_modules/
+**/*.css
+
 # Keep
 !**/.keep
-
-# Source
-src/node_modules
-src/uploads

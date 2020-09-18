@@ -1,0 +1,38 @@
+{
+  "server": {
+    "error": "Internal server error"
+  },
+  "auth": {
+    "welcome": "Welcome $1!",
+    "welcome_again": "Welcome again $1!",
+    "provider": {
+      "error": "Error on connecting to $1",
+      "logged_another_account": "You already logged in with another social account"
+    }
+  },
+  "preference": {
+    "update": {
+      "successful": "Preferences successful updated!"
+    }
+  },
+  "profile": {
+    "update": {
+      "successful": "Profile successful updated!"
+    },
+    "photo": {
+      "update": {
+        "successful": "Profile picture successful updated!",
+        "error": "Error on update profile photo"
+      },
+      "add": {
+        "successful": "Photo successful sent!",
+        "error": "Error on send photo"
+      }
+    }
+  },
+  "validations": {
+    "default": {
+      "required": "Required"
+    }
+  }
+}

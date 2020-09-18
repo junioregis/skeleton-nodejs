@@ -7,10 +7,17 @@
       "request": "attach",
       "port": 9229,
       "address": "localhost",
-      "localRoot": "${workspaceFolder}/src",
-      "remoteRoot": "/app",
+      "localRoot": "${workspaceFolder}/app/src",
+      "remoteRoot": "/app/src",
       "protocol": "inspector",
-      "restart": true
+      "restart": true,
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "smartStep": true,
+      "showAsyncStacks": true,
+      "sourceMapPathOverrides": {
+        "*": "${workspaceFolder}/app/src/*"
+      }
     }
   ]
 }
