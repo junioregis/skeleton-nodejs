@@ -103,4 +103,4 @@ make start
 
 # Architecture
 
-You can see [here](https://github.com/junioregis/skeleton-nodejs/wiki/1-Architecture).
+You can see [here](https://github.com/junioregis/skeleton-nodejs/wiki).
