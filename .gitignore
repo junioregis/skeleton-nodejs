@@ -5,5 +5,8 @@
 **/node_modules/
 **/*.css
 
+# Uploads
+**/uploads/
+
 # Keep
 !**/.keep

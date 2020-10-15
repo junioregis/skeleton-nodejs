@@ -23,47 +23,40 @@ NodeJS REST API skeleton.
 
 ## 1.1. Config
 
-Setup `app/config/development.config.js`:
+The project settings are located in the file `app/config.js`. The environment variables below MUST be assigned:
 
-```js
-{
-  pg: {
-    host: STRING,
-    port: INTEGER,
-    database: STRING,
-    username: STRING,
-    password: STRING,
-  },
-  redis: {
-    host: STRING,
-    port: INTEGER,
-  },
-  selenium: {
-    host: STRING,
-    port: INTEGER,
-  },
-  slack: {
-    webHook: STRING,
-  },
-  mailer: {
-    host: STRING,
-    port: INTEGER,
-    user: STRING,
-    pass: STRING,
-    from: STRING,
-  },
-}
+```
+NODE_ENV: STRING
+PG_HOST: STRING
+PG_PORT: INTEGER
+PG_DB_NAME: STRING
+PG_USER: STRING
+PG_PASS: STRING
+REDIS_HOST: STRING
+REDIS_PORT: INTEGER
+SELENIUM_HOST: STRING
+SELENIUM_PORT: INTEGER
+SLACK_WEBHOOK: STRING
+MAILER_HOST: STRING
+MAILER_PORT: INTEGER
+MAILER_USER: STRING
+MAILER_PASS: STRING
+MAILER_FROM: STRING
 ```
 
 ## 1.2. Mailer
 
-Without Two-step Verification:
+### 1.2.1. Google
 
-`https://myaccount.google.com/lesssecureapps > ENABLE`
+Enable 2-Step Verification:
 
-With Two-step verification:
+`https://myaccount.google.com > Security > Signing in to Google > 2-Step Verification`
 
-`GMail > My Account -> Sign-in & security -> Signing in to Google -> App passwords`
+Create App Password:
+
+`https://myaccount.google.com > Security > Signing in to Google > App passwords`
+
+> If you are using a Google Workspaces account, follow these steps before: `Google Workspaces Admin > Dashboard > Security Settings > 2-Step Verification > Allow users to turn on 2-Step Verification`
 
 ## 1.3. Social Providers
 
@@ -86,6 +79,12 @@ email
 user_gender
 user_birthday
 ```
+
+## 1.4. Slack
+
+Get Webhook:
+
+`https://api.slack.com/apps > Select App > Incoming Webhooks > Webhook URL`
 
 # 2. Build and Run
 

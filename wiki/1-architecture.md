@@ -357,7 +357,7 @@ Result:
     "provider_id": STRING,
     "email": STRING,
     "name": STRING,
-    "gender": STRING, // (null|male|female)
+    "gender": STRING, // (male|female)
     "birthday": DATE,
     "photo": STRING
 }

@@ -39,15 +39,9 @@ async function getUser(accessToken) {
       })
       .url.replace(/s(\d+)$/, "s720");
 
-    var gender = null;
-
-    try {
-      gender = json["genders"].find((item) => {
-        return item.metadata.primary === true;
-      }).value;
-    } catch (e) {
-      // Ignore
-    }
+    const gender = json["genders"].find((item) => {
+      return item.metadata.primary === true;
+    }).value;
 
     return {
       provider: "google",

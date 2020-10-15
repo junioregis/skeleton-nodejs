@@ -4,7 +4,7 @@ const { DataTypes } = require("sequelize");
 const db = require("../db");
 const { DateUtil, ImageUtil } = require("../../../util");
 
-const genders = [null, "male", "female"];
+const genders = ["male", "female"];
 
 const model = db.define(
   "profiles",

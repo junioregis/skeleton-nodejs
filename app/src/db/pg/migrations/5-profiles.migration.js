@@ -16,6 +16,7 @@ module.exports = {
       },
       gender: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       city: {
         type: Sequelize.STRING,

@@ -14,6 +14,7 @@ class NetUtil {
     url = new URL(url);
 
     const options = {
+      headers: {},
       method: method.toUpperCase(),
       hostname: url.hostname,
       port: url.port,

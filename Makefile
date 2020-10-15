@@ -9,6 +9,7 @@ build:
 
 start:
 	$(APP_CMD) up -d --remove-orphans
+	$(APP_CMD) exec app npm outdated || true
 
 stop:
 	$(APP_CMD) down
@@ -20,6 +21,7 @@ db-reset:
 	$(DB_CMD) "DROP SCHEMA public CASCADE; CREATE SCHEMA public; CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;"
 	$(APP_CMD) exec redis redis-cli FLUSHALL
 	$(APP_CMD) exec app npm run prepare
+	@make api-clients
 
 geo-update:
 	$(APP_CMD) exec app geo update

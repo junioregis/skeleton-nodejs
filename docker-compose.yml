@@ -16,6 +16,21 @@ services:
       - 9229:9229
     environment:
       NODE_ENV: development
+      PG_HOST: db
+      PG_PORT: 5432
+      PG_DB_NAME: db
+      PG_USER: postgres
+      PG_PASS: postgres
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SELENIUM_HOST: selenium
+      SELENIUM_PORT: 4444
+      SLACK_WEBHOOK: https://hooks.slack.com/services/...
+      MAILER_HOST: smtp.gmail.com
+      MAILER_PORT: 465
+      MAILER_USER: webmaster@domain.com
+      MAILER_PASS: P@ssword
+      MAILER_FROM: Domain
     depends_on:
       - db
       - redis
